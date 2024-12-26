@@ -4,6 +4,7 @@ import com.example.personal_notes.model.Note;
 import com.example.personal_notes.service.impl.UserDetailsServiceImpl;
 import com.example.personal_notes.util.CustomUserDetails;
 import com.example.personal_notes.service.impl.NoteServiceImpl;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -29,6 +30,7 @@ public class NoteControllerImpl {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public Note createNote(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody Note note) {
         note.setUser(userDetails.user());
         return noteService.save(note);
@@ -42,6 +44,7 @@ public class NoteControllerImpl {
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteNote(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long id) {
         boolean isDeleted = noteService.deleteByIdAndUser(id, userDetails.user());
         if (!isDeleted) throw new ResponseStatusException(NOT_FOUND, "Unable to find note");
