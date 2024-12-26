@@ -24,6 +24,9 @@ public class AuthServiceImpl {
     }
 
     public User register(String username, String password) {
+        if (userRepository.findByUsername(username) != null) {
+            return null;
+        }
         User user = new User();
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
