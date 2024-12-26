@@ -23,6 +23,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
 	implementation 'com.auth0:java-jwt:4.4.0'
+	implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.2'
 
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 

@@ -1,6 +1,7 @@
 package com.example.personal_notes.controller.impl;
 
 import com.example.personal_notes.model.Note;
+import com.example.personal_notes.service.impl.ExportServiceImpl;
 import com.example.personal_notes.util.CustomUserDetails;
 import com.example.personal_notes.service.impl.NoteServiceImpl;
 import org.springframework.http.HttpStatus;
@@ -16,9 +17,11 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @RequestMapping("/api/notes")
 public class NoteControllerImpl {
     private final NoteServiceImpl noteService;
+    private final ExportServiceImpl exportService;
 
-    public NoteControllerImpl(NoteServiceImpl noteService) {
+    public NoteControllerImpl(NoteServiceImpl noteService, ExportServiceImpl exportService) {
         this.noteService = noteService;
+        this.exportService = exportService;
     }
 
     @GetMapping
@@ -45,5 +48,10 @@ public class NoteControllerImpl {
     public void deleteNote(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long id) {
         boolean isDeleted = noteService.deleteByIdAndUser(id, userDetails.user());
         if (!isDeleted) throw new ResponseStatusException(NOT_FOUND, "Unable to find note");
+    }
+
+    @GetMapping("/{id}/export")
+    public String exportNote(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long id, @RequestParam String format) {
+        return exportService.exportNote(id, userDetails.user(), format);
     }
 }
