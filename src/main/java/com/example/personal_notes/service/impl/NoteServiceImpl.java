@@ -19,7 +19,8 @@ public class NoteServiceImpl {
         return noteRepository.findByUser(user);
     }
 
-    public Note save(Note note) {
+    public Note saveByUser(Note note, User user) {
+        note.setUser(user);
         return noteRepository.save(note);
     }
 

@@ -32,8 +32,7 @@ public class NoteControllerImpl {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Note createNote(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody Note note) {
-        note.setUser(userDetails.user());
-        return noteService.save(note);
+        return noteService.saveByUser(note, userDetails.user());
     }
 
     @GetMapping("/{id}")
