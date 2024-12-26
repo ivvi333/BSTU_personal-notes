@@ -1,6 +1,7 @@
 package com.example.personal_notes.service.impl;
 
 import com.example.personal_notes.model.Note;
+import com.example.personal_notes.model.User;
 import com.example.personal_notes.repository.NoteRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,19 +15,24 @@ public class NoteServiceImpl {
         this.noteRepository = noteRepository;
     }
 
-    public List<Note> findAll() {
-        return noteRepository.findAll();
+    public List<Note> findByUser(User user) {
+        return noteRepository.findByUser(user);
     }
 
     public Note save(Note note) {
         return noteRepository.save(note);
     }
 
-    public void delete(Long id) {
-        noteRepository.deleteById(id);
+    public Note findByIdAndUser(Long id, User user) {
+        return noteRepository.findByIdAndUser(id, user);
     }
 
-    public Note findById(Long id) {
-        return noteRepository.findById(id).orElse(null);
+    public boolean deleteByIdAndUser(Long id, User user) {
+        Note note = findByIdAndUser(id, user);
+        if (note != null) {
+            noteRepository.delete(note);
+            return true;
+        }
+        return false;
     }
 }
