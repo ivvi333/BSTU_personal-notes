@@ -5,7 +5,9 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.example.personal_notes.model.User;
 import com.example.personal_notes.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +36,13 @@ public class AuthServiceImpl {
     }
 
     public String login(String username, String password) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        } catch (BadCredentialsException e) {
+            throw new RuntimeException("Invalid username or password");
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Authentication failed: " + e.getMessage());
+        }
         User user = userRepository.findByUsername(username);
         return JWT.create()
                 .withSubject(user.getUsername())

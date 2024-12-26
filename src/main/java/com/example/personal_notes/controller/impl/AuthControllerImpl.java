@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import static org.springframework.http.HttpStatus.CONFLICT;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 
 @RestController
@@ -30,6 +31,10 @@ public class AuthControllerImpl {
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
     public String login(@RequestBody UserDto userDto) {
-        return authService.login(userDto.username(), userDto.password());
+        try {
+            return authService.login(userDto.username(), userDto.password());
+        } catch (RuntimeException e) {
+            throw new ResponseStatusException(UNAUTHORIZED, e.getMessage());
+        }
     }
 }
