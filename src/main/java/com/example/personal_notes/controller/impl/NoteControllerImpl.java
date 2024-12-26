@@ -1,7 +1,6 @@
 package com.example.personal_notes.controller.impl;
 
 import com.example.personal_notes.model.Note;
-import com.example.personal_notes.service.impl.UserDetailsServiceImpl;
 import com.example.personal_notes.util.CustomUserDetails;
 import com.example.personal_notes.service.impl.NoteServiceImpl;
 import org.springframework.http.HttpStatus;
@@ -17,11 +16,9 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @RequestMapping("/api/notes")
 public class NoteControllerImpl {
     private final NoteServiceImpl noteService;
-    private final UserDetailsServiceImpl userDetailsService;
 
-    public NoteControllerImpl(NoteServiceImpl noteService, UserDetailsServiceImpl userDetailsService) {
+    public NoteControllerImpl(NoteServiceImpl noteService) {
         this.noteService = noteService;
-        this.userDetailsService = userDetailsService;
     }
 
     @GetMapping
