@@ -60,4 +60,9 @@ public class NoteControllerImpl {
     public String exportNote(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long id, @RequestParam String format) {
         return exportService.exportNote(id, userDetails.user(), format);
     }
+
+    @GetMapping("/export")
+    public String exportUserNotes(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam String format) {
+        return exportService.exportUserNotes(userDetails.user(), format);
+    }
 }
