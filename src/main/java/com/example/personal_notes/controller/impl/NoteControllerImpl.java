@@ -35,6 +35,13 @@ public class NoteControllerImpl {
         return noteService.saveByUser(note, userDetails.user());
     }
 
+    @PostMapping("/{id}")
+    public Note changeNoteByIdAndUser(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long id, @RequestBody Note newNote) {
+        Note note = noteService.changeNoteByIdAndUser(id, userDetails.user(), newNote);
+        if (note == null) throw new ResponseStatusException(NOT_FOUND, "Unable to find note");
+        return note;
+    }
+
     @GetMapping("/{id}")
     public Note getNoteByIdAndUser(@AuthenticationPrincipal CustomUserDetails userDetails, @PathVariable Long id) {
         Note note = noteService.findByIdAndUser(id, userDetails.user());

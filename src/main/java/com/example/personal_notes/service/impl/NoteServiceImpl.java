@@ -36,4 +36,14 @@ public class NoteServiceImpl {
         }
         return false;
     }
+
+    public Note changeNoteByIdAndUser(Long id, User user, Note newNote) {
+        Note note = findByIdAndUser(id, user);
+        if (note != null) {
+            note.setTitle(newNote.getTitle());
+            note.setContent(newNote.getContent());
+            noteRepository.save(note);
+        }
+        return note;
+    }
 }
